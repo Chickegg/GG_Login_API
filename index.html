@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+        <script>
+         function checkLoginStatus() {
+            let loginBtn = document.querySelector('#loginBtn');
+            let nameTxT = document.querySelector('#name');
+                    if(gauth.isSignedIn.get()) {
+                        console.log('Logined');
+                        loginBtn.value = 'Logout';
+                        let profile = gauth.currentUser.get().getBasicProfile();
+                        console.log(profile.getName());
+                        console.log(gauth.currentUser.get().getGrantedScopes ())
+                        nameTxT.innerHTML = 'Welcome <strong>' + profile.getName() + '</strong> ';
+                    } else {
+                        console.log('Logouted');
+                        loginBtn.value = "Login";
+                        nameTxT.innerHTML = "";
+                    }
+         }
+         function init() {
+            gapi.load('auth2', function() {
+                /* Ready. Make a call to gapi.auth2.init or some other API */
+                window.gauth = gapi.auth2.init({ // 초기화 부분 전역변수를 사용하는 방법
+                    client_id:'733728728225-ih778qhg81i6s8vo95chk9m5p2soqpnc.apps.googleusercontent.com'
+                });
+                gauth.then(function() {
+                    console.log('googleAuth sucess');
+                    checkLoginStatus();
+                }, function() {
+                    console.log('googleAuth fail');
+                });
+                
+            });
+            }
+        </script>
+    </head>
+    <body>
+        <span id="name"></span><input type="button" id = 'loginBtn' value="checking..." onclick="
+        if(this.value === 'Login') {
+                gauth.signIn({
+                    scope:'https://www.googleapis.com/auth/calendar.addons.execute',
+                    scope : 'https://www.googleapis.com/auth/userinfo.profile'
+                    }).then(function() {
+                    console.log('gauth.signIn()');
+                    checkLoginStatus();
+                });
+        } else {
+                gauth.signOut().then(function() {
+                    console.log('gauth.signOut()');
+                    checkLoginStatus();
+                });
+        }
+            ">
+        <h1>Google</h1>
+        <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+    </body>
+
+</html>

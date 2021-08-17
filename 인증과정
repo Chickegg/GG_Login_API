@@ -1,0 +1,46 @@
+전통적인 모델
+    id,password를 통해서 일치하는지의 여부에 따라서 권한 설정.
+
+Resource Owner(유저)
+Client(우리의 서비스)
+Resource Server(Google, FaceBook같은 Server)
+
+Resource Owner에게 권한을 요청하면 Resource Owner가 Resource Server에게 요청하여 access token을 발급한다.
+access token : 일부기능만을 Client에게 허락하는 특수한 비밀번호
+
+Client는 acess token을 받아서 API등을 호출할 경우 비밀번호 대신에 사용하여 정보를 요청하고 수정한다.
+
+ex) 사용자의 id가 무엇인가❓ Resource Server에게 요청하면 이메일이 아닌 가입할때 생기는 고유한 id값을 물어보는 것이다.
+    id를 통해서 할 수 있는 것은❓  기존의 id와,password를 대체할 수 있다.
+
+3.Client 등록 (acess token을 받기위해 등록을  해주어야 한다.)
+    Client id, Client Secret, redirect URL을 우리에게 할당해 준다.
+    Client id는 공개적으로 가능, Secret은 절대로 보여줘서는 안된다.
+
+OAuth 동의화면을 만든다.
+    OAuth 동의화면이란❓
+        사용자로부터 권한을 위임받기위해 사용자에게 물어보는 화면
+
+    OAuth 클라이어은 ID 만들기
+        애플리케이션 유형 (해당 유형을 선택)
+            하나의 프로젝트안의 각각의 앱의 종류가 여러 개일 수도 있다.
+    승인된 자바스크립트 원본
+        기밀한 정보들이 전달될 것이기 때문에 https로 해주어야 한다.
+        * localhost로는 현재 진행되지 않지만 라이브러리에서 Google+ API를 다운받고하니 가능했다.
+        이를 통해서 우리는 id,Secret을 발급 받았다.
+
+🟠구글 플랫폼 라이브러리에서 불러오기 [구글 로그인 통합]
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
+<div class="g-signin2" data-onsuccess="onSignIn"></div> 
+    로그인이 끝났을 때 onSignIn이라는 함수를 만들어 놓으면 자동으로 호출할 것이다.
+    이 함수에는 console.log( ID, Name, Image URL, Email) 등이 console.log될 것이다.
+
+인증 API - auth2 로드
+🟠
+auh2 초기화
+
+기본적인 profile을 원하는 것이아닌
+구글 캘린더, 맵등을 사용하고 싶다면 library에서 활성화 시켜줘야 한다.
+
+scope(유효범위): access token을 얻었을 때 어떤한 기능들에 대해서 유효한지에 대한 범위 
